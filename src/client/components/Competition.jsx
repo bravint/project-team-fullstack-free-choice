@@ -32,12 +32,11 @@ export const Competition = () => {
         const selectedCompetition = competitions.filter((competition) => competition.id === Number(params.competitionId));
 
         handleDispatch(STORE_ACTIONS.SELECTED_COMPETITION, selectedCompetition);
-    }, []);
+    }, [competitions]);
 
     useEffect(() => {
         if(!selectedCompetition.length) return;
 
-        console.log('currentCompetition', selectedCompetition);
         const { seasons } = selectedCompetition[0];
 
         if (!seasons) {

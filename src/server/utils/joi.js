@@ -24,10 +24,10 @@ const loginSchema = joi.object({
 });
 
 const seasonCreateSchema = joi.object({
+    competitionId: joi.number()
+        .required(),
     title: joi.string()
-        .required(),
-    competitionId: joi.any() //change to reflect incoming from front end
-        .required(),
+    .required(),
     participants: joi.array()
         .required(),
     teams: joi.array()

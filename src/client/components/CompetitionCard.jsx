@@ -51,7 +51,6 @@ export const CompetitionCard = (props) => {
   };
 
   const setZeroTotalScores = (competitors) => {
-    console.log(competitors);
     const scores = competitors.map((competitor) => {
       return {
         competitor: competitor,

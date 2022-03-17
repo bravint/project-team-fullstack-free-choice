@@ -17,7 +17,7 @@ export const MappingForm = ({ form, setForm, formStep, setFormStep }) => {
 
     const nextStep = () => {
         if (formStep !== currentFormStep || mappingForm.includes(undefined)) return;
-        setForm({ ...form, mapping: [...mappingForm] })
+        setForm({ ...form, positionMappings: [...mappingForm] })
         setFormStep(currentFormStep + 1)
     }
     const previousStep = () => setFormStep(currentFormStep - 1)

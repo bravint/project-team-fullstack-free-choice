@@ -40,8 +40,6 @@ export const Season = () => {
     }, [selectedSeason]);
 
     const onChangeHandler = (event) => {
-        console.log(event.target.value);
-
         const filteredRound = selectedSeason[0].rounds.filter((round) => round.id === Number(event.target.value));
 
         handleDispatch(STORE_ACTIONS.SELECTED_ROUND, filteredRound);

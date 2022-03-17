@@ -5,7 +5,6 @@ const { HTTP_RESPONSE } = require('../config');
 
 const createSeason = async (req, res) => {
     const { error } = seasonCreateSchema.validate(req.body);
-    console.log(req.body)
 
     if (error) {
         return res.status(HTTP_RESPONSE.BAD_REQUEST.CODE).json({ error: error.details[0] });
@@ -22,14 +21,23 @@ const createSeason = async (req, res) => {
 
     const seasonId = createdSeason.id;
 
+    const createdTeams = [];
+
     for (let i = 0; i < teams.length; i++) {
-        await prisma.team.create({
+        const createdTeam = await prisma.team.create({
             data: {
                 name: teams[i].name,
                 seasonId: seasonId,
             },
         });
+        createdTeams.push(createdTeam);
     }
+
+    const findTeamId = (participant) => {
+        const selectedTeam = createdTeams.filter((team) => team.name === participant.team);
+
+        return selectedTeam[0].id;
+    };
 
     for (let i = 0; i < participants.length; i++) {
         await prisma.participant.create({
@@ -41,7 +49,12 @@ const createSeason = async (req, res) => {
                 },
                 competitor: {
                     connect: {
-                        id: participants[i].competitorId,
+                        id: Number(participants[i].competitorId),
+                    },
+                },
+                team: {
+                    connect: {
+                        id: findTeamId(participants[i]),
                     },
                 },
             },
@@ -52,7 +65,7 @@ const createSeason = async (req, res) => {
         await prisma.positionMapping.create({
             data: {
                 position: i + 1,
-                mapping: positionMappings[i],
+                mapping: Number(positionMappings[i]),
                 season: {
                     connect: {
                         id: seasonId,
@@ -95,9 +108,7 @@ const getSeasonsByCompetition = async (req, res) => {
         },
     });
 
-    return res
-        .status(HTTP_RESPONSE.CREATED.CODE)
-        .json({ data: selectedSeasons });
+    return res.status(HTTP_RESPONSE.CREATED.CODE).json({ data: selectedSeasons });
 };
 
 module.exports = {

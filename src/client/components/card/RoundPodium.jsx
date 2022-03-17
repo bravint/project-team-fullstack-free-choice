@@ -5,10 +5,8 @@ import { PodiumParticipant } from './PodiumParticipant';
 export const RoundPodium = (props) => {
     const { index, element, season, round } = props;
 
-    const { participant, placement } = element;
+    const { participant } = element;
     const { teams, positionMappings } = season;
-
-    console.log({ participant, season, placement, round });
 
     const findTeam = () => {
         let teamName;
